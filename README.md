@@ -1,43 +1,33 @@
-# Phaser Angular Template
+# Vibe Farm
 
-This is a Phaser 3 project template that uses the Angular framework. It includes a bridge for Angular to Phaser game communication, hot-reloading for quick development workflow and scripts to generate production-ready builds.
+Vibe Farm is a farming game inspired by Stardew Valley, built with Angular and Phaser. This project was bootstrapped from the phaserjs/template-angular starter.
 
-### Versions
+## Getting Started
 
-This template has been updated for:
+### Prerequisites
+- Node.js (recommended: latest LTS)
+- npm
 
-- [Phaser 3.88.2](https://github.com/phaserjs/phaser)
-- [Angular 19.2.0](https://github.com/angular)
-- [TypeScript 5.7.2](https://github.com/microsoft/TypeScript)
+### Install dependencies
+```
+npm install
+```
 
-![screenshot](screenshot.png)
+### Run the development server
+```
+npm start
+```
 
-## Requirements
+### Build for production
+```
+npm run build
+```
 
-[Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
-[ng cli](https://angular.io/cli) is required to run the project.
+## Development Container
+This project is ready to be used in a VS Code devcontainer for a consistent development environment.
 
-## Available Commands
-
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install project dependencies |
-| `npm run dev` | Launch a development web server |
-| `npm run build` | Create a production build in the `build` folder |
-| `npm run dev-nolog` | Launch a development web server without sending anonymous data (see "About log.js" below) |
-| `npm run build-nolog` | Create a production build in the `dist` folder without sending anonymous data (see "About log.js" below) |
-
-## Writing Code
-
-After cloning the repo, run `npm install` from your project directory. Install ng cli with `npm install -g @angular/cli`. Then, you can start the local development server by running `npm run dev`.
-
-The local development server runs on `http://localhost:8080` by default. Please see the Angular documentation if you wish to change this, or add SSL support.
-
-Once the server is running you can edit any of the files in the `src` folder. Angular will automatically recompile your code and then reload the browser.
-
-## Template Project Structure
-
-We have provided a default project structure to get you started. This is as follows:
+## License
+Specify your license here.
 
 | Path                                 | Description                                                |
 |--------------------------------------|------------------------------------------------------------|
