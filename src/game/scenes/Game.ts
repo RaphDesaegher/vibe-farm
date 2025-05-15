@@ -5,7 +5,6 @@ export class Game extends Scene
 {
     camera: Phaser.Cameras.Scene2D.Camera;
     background: Phaser.GameObjects.Image;
-    gameText: Phaser.GameObjects.Text;
 
     constructor ()
     {
@@ -15,22 +14,14 @@ export class Game extends Scene
     create ()
     {
         this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
+        this.camera.setBackgroundColor(0x0f0f0f); // Set to match app background
 
         this.background = this.add.image(512, 384, 'background');
         this.background.setAlpha(0.5);
 
-        this.gameText = this.add.text(512, 384, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        }).setOrigin(0.5).setDepth(100);
-
+        // Ready for world creation and game objects
         EventBus.emit('current-scene-ready', this);
     }
 
-    changeScene ()
-    {
-        this.scene.start('GameOver');
-    }
+    // Placeholder for scene change logic
 }

@@ -1,234 +1,39 @@
+
 # Vibe Farm
 
-Vibe Farm is a farming game inspired by Stardew Valley, built with Angular and Phaser. This project was bootstrapped from the phaserjs/template-angular starter.
+Vibe Farm is a cozy farming game inspired by Stardew Valley, built with Angular and Phaser for the web.
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (recommended: latest LTS)
+- Node.js (latest LTS recommended)
 - npm
 
 ### Install dependencies
-```
+```sh
 npm install
 ```
 
 ### Run the development server
-```
+```sh
 npm start
 ```
 
 ### Build for production
-```
+```sh
 npm run build
 ```
 
-## Development Container
-This project is ready to be used in a VS Code devcontainer for a consistent development environment.
+## Project Structure
 
-## License
-Specify your license here.
+- `public/assets/` — Game sprites, audio, and other static assets
+- `src/app/` — Angular application code and UI components
+- `src/game/` — Phaser game logic and scenes
 
-| Path                                 | Description                                                |
-|--------------------------------------|------------------------------------------------------------|
-| `public/assets`                      | Game sprites, audio, etc. Served directly at runtime       |
-| `src/index.html`                     | Angular entry point (HTML)                                 |
-| `src/main.ts`                        | Angular application bootstrap                              |
-| `src/style.css`                      | Global layout styles                                       |
-| `src/app/app.component.ts`           | Root Angular component                                     |
-| `src/app/app.component.html`         | HTML template for the app component                        |
-| `src/app/phaser-game.component.ts`   | Bridge between Angular and your Phaser game                |
-| `src/game`                           | Folder containing the game code.                           |
-| `src/game/main.ts`                   | Game bootstrap and configuration                           |
-| `src/game/scenes`                    | Folder with all Phaser game scenes.                        |
-| `src/game/EventBus.ts`               | Angular ↔ Phaser communication bridge                      |
+## About
 
+Vibe Farm is in early development. The player will manage a farm, plant and harvest crops, craft items, and explore a world with fantasy elements. More features and details coming soon!
 
-## Angular Bridge
+---
 
-The `phaser-game.component.ts` component is the bridge between Angular and Phaser. It initializes the Phaser game and passes events between the two.
-
-To communicate between Angular and Phaser, you can use the **EventBus.ts** file. This is a simple event bus that allows you to emit and listen for events from both Angular and Phaser.
-
-```js
-// In Angular
-import { EventBus } from './EventBus';
-
-// In any Angular component method
-// Emit an event
-EventBus.emit('event-name', data);
-
-// In Phaser
-// Listen for an event
-EventBus.on('event-name', (data) => {
-    // Do something with the data
-});
-```
-
-In addition to this, the `phaser-game` component exposes the Phaser game instance along with the most recently active Phaser Scene. You can pick these up from Angular via `phaserRef = viewChild.required(PhaserGame);` (we explain this later).
-
-## Phaser Scene Handling
-
-In Phaser, the Scene is the lifeblood of your game. It is where you sprites, game logic and all of the Phaser systems live. You can also have multiple scenes running at the same time. This template provides a way to obtain the current active scene from Angular.
-
-You can get the current Phaser Scene from the component event `"current-active-scene"`. In order to do this, you need to emit the event `"current-scene-ready"` from the Phaser Scene class. This event should be emitted when the scene is ready to be used. You can see this done in all of the Scenes in our template.
-
-**Important**: When you add a new Scene to your game, make sure you expose to Angular by emitting the `"current-scene-ready"` event via the `EventBus`, like this:
-
-
-```js
-class MyScene extends Phaser.Scene
-{
-    constructor ()
-    {
-        super('MyScene');
-    }
-
-    create ()
-    {
-        // Your Game Objects and logic here
-
-        // At the end of create method:
-        EventBus.emit('current-scene-ready', this);
-    }
-}
-```
-
-You don't have to emit this event if you don't need to access the specific scene from Angular. Also, you don't have to emit it at the end of `create`, you can emit it at any point. For example, should your Scene be waiting for a network request or API call to complete, it could emit the event once that data is ready.
-
-### Angular Component Example
-
-Here's an example of how to access Phaser data for use in a Angular Component:
-
-```ts
-import { Component, viewChild } from '@angular/core';
-import { PhaserGame } from '../game/phaser-game.component';
-import { EventBus } from '../game/EventBus';
-
-@Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [PhaserGame],
-  templateUrl: './app.component.html'
-})
-export class AppComponent
-{
-
-    phaserRef = viewChild.required(PhaserGame);
-
-    constructor ()
-    {
-
-        const game = this.phaserRef().game;
-        const scene = this.phaserRef().scene;
-
-        EventBus.on('current-scene-ready', (scene: Phaser.Scene) => {
-            // Handle the ready scene
-        });
-
-    }
-
-}
-
-```
-
-In the code above, you can get a reference to the current Phaser Game instance and the current Scene by calling `phaserRef = viewChild.required(PhaserGame);`.
-
-From this component reference, the game instance is available via `this.phaserRef.game` and the most recently active Scene via `this.phaserRef.scene`
-
-The `EventBus.on('current-scene-ready')` callback will also be invoked whenever the the Phaser Scene changes, as long as you emit the event via the EventBus, as outlined above.
-
-## Handling Assets
-
-To load static files such as audio files, videos, etc place them into the `public/assets` folder. Then you can use this path in the Loader calls within Phaser:
-
-```js
-preload ()
-{
-    //  This is an example of an imported bundled image.
-    //  Remember to import it at the top of this file
-    this.load.image('logo', logoImg);
-
-    //  This is an example of loading a static image
-    //  from the public/assets folder:
-    this.load.image('background', 'assets/bg.png');
-}
-```
-
-When you issue the `npm run build` command, all static assets are automatically copied to the `dist/browser/assets` folder.
-
-## Deploying to Production
-
-After you run the `npm run build` command, your code will be built into a single bundle and saved to the `dist` folder, along with any other assets your project imported, or stored in the public assets folder.
-
-In order to deploy your game, you will need to upload *all* of the contents of the `dist/browser` folder to a public facing web server.
-
-## Customizing the Template
-
-### Angular
-
-If you want to customize your build, such as adding plugin (i.e. for loading CSS or fonts), you can modify the `angular.json` file for cross-project changes, or you can modify and/or create new configuration files and target them in specific npm tasks inside of `package.json`. Please see the [Angular documentation](https://angular.io/guide/workspace-config) for more information.
-
-## About log.js
-
-If you inspect our node scripts you will see there is a file called `log.js`. This file makes a single silent API call to a domain called `gryzor.co`. This domain is owned by Phaser Studio Inc. The domain name is a homage to one of our favorite retro games.
-
-We send the following 3 pieces of data to this API: The name of the template being used (vue, react, etc). If the build was 'dev' or 'prod' and finally the version of Phaser being used.
-
-At no point is any personal data collected or sent. We don't know about your project files, device, browser or anything else. Feel free to inspect the `log.js` file to confirm this.
-
-Why do we do this? Because being open source means we have no visible metrics about which of our templates are being used. We work hard to maintain a large and diverse set of templates for Phaser developers and this is our small anonymous way to determine if that work is actually paying off, or not. In short, it helps us ensure we're building the tools for you.
-
-However, if you don't want to send any data, you can use these commands instead:
-
-Dev:
-
-```bash
-npm run dev-nolog
-```
-
-Build:
-
-```bash
-npm run build-nolog
-```
-
-Or, to disable the log entirely, simply delete the file `log.js` and remove the call to it in the `scripts` section of `package.json`:
-
-Before:
-
-```json
-"scripts": {
-    "dev": "node log.js dev & dev-template-script",
-    "build": "node log.js build & build-template-script"
-},
-```
-
-After:
-
-```json
-"scripts": {
-    "dev": "dev-template-script",
-    "build": "build-template-script"
-},
-```
-
-Either of these will stop `log.js` from running. If you do decide to do this, please could you at least join our Discord and tell us which template you're using! Or send us a quick email. Either will be super-helpful, thank you.
-
-
-## Join the Phaser Community!
-
-We love to see what developers like you create with Phaser! It really motivates us to keep improving. So please join our community and show-off your work 😄
-
-**Visit:** The [Phaser website](https://phaser.io) and follow on [Phaser Twitter](https://twitter.com/phaser_)<br />
-**Play:** Some of the amazing games [#madewithphaser](https://twitter.com/search?q=%23madewithphaser&src=typed_query&f=live)<br />
-**Learn:** [API Docs](https://newdocs.phaser.io), [Support Forum](https://phaser.discourse.group/) and [StackOverflow](https://stackoverflow.com/questions/tagged/phaser-framework)<br />
-**Discord:** Join us on [Discord](https://discord.gg/phaser)<br />
-**Code:** 2000+ [Examples](https://labs.phaser.io)<br />
-**Read:** The [Phaser World](https://phaser.io/community/newsletter) Newsletter<br />
-
-Created by [Phaser Studio](mailto:support@phaser.io). Powered by coffee, anime, pixels and love.
-
-The Phaser logo and characters are &copy; 2011 - 2025 Phaser Studio Inc.
-
-All rights reserved.
+© 2025 Vibe Farm. All rights reserved.
